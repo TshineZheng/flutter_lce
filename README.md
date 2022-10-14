@@ -1,39 +1,48 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+# Flutter LCE (Load content error) 
+这是一个 Flutter LCE 实现
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+需要配合 get_it、mobx、injectable ，使用前务必了解他们的使用方法。
 
 ## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
+### 1. 页面 store
 ```dart
-const like = 'sample';
-```
+/// 配合 injectable 自动注入
+@injectable
+class MyHomePageStore = _MyHomePageStoreBase with _$MyHomePageStore;
 
+/// 创建 mobx store 并继承 LCEStore
+abstract class _MyHomePageStoreBase extends LCEStore with Store {
+  @observable
+  var counter = 0;
+}
+```
+### 2. 页面
+```dart
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+  final String title;
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+/// 创建页面 State，继承 LCEState
+class _MyHomePageState extends LCEState<MyHomePage, MyHomePageStore> {
+  @override
+  Widget buildContent(BuildContext context) {
+    return Scaffold(
+      body: Observer(
+        builder: (_) {
+          return Text(
+            '${store.counter}', // store 是通过 injectable 注入的
+          );
+        },
+      ),
+    );
+  }
+}
+```
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+更多内容详见 example
