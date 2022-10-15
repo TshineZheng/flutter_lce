@@ -1,0 +1,29 @@
+{
+    "files.exclude": {
+      "**.dart_tool": true,
+      "**.vscode": true,
+      "**.idea": true,
+      "**android": true,
+      "**build": true,
+      "**gen": true,
+      "**ios": true,
+      "**.flutter-plugins": true,
+      "**.gitignore": true,
+      "**.metadata": true,
+      "**.packages": true,
+      "**pubspec.lock": true,
+      "**README.md": true,
+      "**/**.g.dart": true,
+      "**/**.inject.dart": true,
+      "**/**.inject.summary": true,
+      "**.flutter-plugins-dependencies": true,
+      "**analysis_options.yaml": true,
+      "**.gradle": true,
+      "**.fvm": true,
+      "**lib/gen": true,
+      "**pigeons": true,
+      "web/": true,
+      "windows/": true,
+      "**/.gitignore": true
+    }
+}

@@ -8,22 +8,22 @@ part of 'lce_store.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$LCEStore on _LCEStoreBase, Store {
+mixin _$LCEStore on LCEStoreBase, Store {
   Computed<bool>? _$loadingComputed;
 
   @override
   bool get loading => (_$loadingComputed ??=
-          Computed<bool>(() => super.loading, name: '_LCEStoreBase.loading'))
+          Computed<bool>(() => super.loading, name: 'LCEStoreBase.loading'))
       .value;
   Computed<bool>? _$progressComputed;
 
   @override
   bool get progress => (_$progressComputed ??=
-          Computed<bool>(() => super.progress, name: '_LCEStoreBase.progress'))
+          Computed<bool>(() => super.progress, name: 'LCEStoreBase.progress'))
       .value;
 
   late final _$progressTriggerAtom =
-      Atom(name: '_LCEStoreBase.progressTrigger', context: context);
+      Atom(name: 'LCEStoreBase.progressTrigger', context: context);
 
   @override
   bool get progressTrigger {
@@ -38,24 +38,8 @@ mixin _$LCEStore on _LCEStoreBase, Store {
     });
   }
 
-  late final _$lceRetryAtom =
-      Atom(name: '_LCEStoreBase.lceRetry', context: context);
-
-  @override
-  LCERetry? get lceRetry {
-    _$lceRetryAtom.reportRead();
-    return super.lceRetry;
-  }
-
-  @override
-  set lceRetry(LCERetry? value) {
-    _$lceRetryAtom.reportWrite(value, super.lceRetry, () {
-      super.lceRetry = value;
-    });
-  }
-
   late final _$navAnimDoneAtom =
-      Atom(name: '_LCEStoreBase.navAnimDone', context: context);
+      Atom(name: 'LCEStoreBase.navAnimDone', context: context);
 
   @override
   bool get navAnimDone {
@@ -70,74 +54,93 @@ mixin _$LCEStore on _LCEStoreBase, Store {
     });
   }
 
-  late final _$_LCEStoreBaseActionController =
-      ActionController(name: '_LCEStoreBase', context: context);
+  late final _$lceRetryAtom =
+      Atom(name: 'LCEStoreBase.lceRetry', context: context);
+
+  @override
+  LCERetry? get lceRetry {
+    _$lceRetryAtom.reportRead();
+    return super.lceRetry;
+  }
+
+  @override
+  set lceRetry(LCERetry? value) {
+    _$lceRetryAtom.reportWrite(value, super.lceRetry, () {
+      super.lceRetry = value;
+    });
+  }
+
+  late final _$lceMessageAtom =
+      Atom(name: 'LCEStoreBase.lceMessage', context: context);
+
+  @override
+  LCEMessage? get lceMessage {
+    _$lceMessageAtom.reportRead();
+    return super.lceMessage;
+  }
+
+  @override
+  set lceMessage(LCEMessage? value) {
+    _$lceMessageAtom.reportWrite(value, super.lceMessage, () {
+      super.lceMessage = value;
+    });
+  }
+
+  late final _$LCEStoreBaseActionController =
+      ActionController(name: 'LCEStoreBase', context: context);
 
   @override
   void progressStart() {
-    final _$actionInfo = _$_LCEStoreBaseActionController.startAction(
-        name: '_LCEStoreBase.progressStart');
+    final _$actionInfo = _$LCEStoreBaseActionController.startAction(
+        name: 'LCEStoreBase.progressStart');
     try {
       return super.progressStart();
     } finally {
-      _$_LCEStoreBaseActionController.endAction(_$actionInfo);
+      _$LCEStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void progressEnd() {
-    final _$actionInfo = _$_LCEStoreBaseActionController.startAction(
-        name: '_LCEStoreBase.progressEnd');
+    final _$actionInfo = _$LCEStoreBaseActionController.startAction(
+        name: 'LCEStoreBase.progressEnd');
     try {
       return super.progressEnd();
     } finally {
-      _$_LCEStoreBaseActionController.endAction(_$actionInfo);
+      _$LCEStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void showDialog({String? title, required String msg, String? button}) {
-    final _$actionInfo = _$_LCEStoreBaseActionController.startAction(
-        name: '_LCEStoreBase.showDialog');
+  void showRetry(String message, {RetryFunction? onRetry, String? title}) {
+    final _$actionInfo = _$LCEStoreBaseActionController.startAction(
+        name: 'LCEStoreBase.showRetry');
     try {
-      return super.showDialog(title: title, msg: msg, button: button);
+      return super.showRetry(message, onRetry: onRetry, title: title);
     } finally {
-      _$_LCEStoreBaseActionController.endAction(_$actionInfo);
+      _$LCEStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void showRetry(
-      {RetryFunction? onRetry, String? message, String? title, dynamic error}) {
-    final _$actionInfo = _$_LCEStoreBaseActionController.startAction(
-        name: '_LCEStoreBase.showRetry');
+  void showMsg(String msg, {Duration? duration}) {
+    final _$actionInfo = _$LCEStoreBaseActionController.startAction(
+        name: 'LCEStoreBase.showMsg');
     try {
-      return super.showRetry(
-          onRetry: onRetry, message: message, title: title, error: error);
+      return super.showMsg(msg, duration: duration);
     } finally {
-      _$_LCEStoreBaseActionController.endAction(_$actionInfo);
+      _$LCEStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void showError(dynamic err, [StackTrace? stackTrace]) {
-    final _$actionInfo = _$_LCEStoreBaseActionController.startAction(
-        name: '_LCEStoreBase.showError');
+  void showMsgDlg(String msg, {String? title, String? button}) {
+    final _$actionInfo = _$LCEStoreBaseActionController.startAction(
+        name: 'LCEStoreBase.showMsgDlg');
     try {
-      return super.showError(err, stackTrace);
+      return super.showMsgDlg(msg, title: title, button: button);
     } finally {
-      _$_LCEStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void showToast(String msg) {
-    final _$actionInfo = _$_LCEStoreBaseActionController.startAction(
-        name: '_LCEStoreBase.showToast');
-    try {
-      return super.showToast(msg);
-    } finally {
-      _$_LCEStoreBaseActionController.endAction(_$actionInfo);
+      _$LCEStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
@@ -145,8 +148,9 @@ mixin _$LCEStore on _LCEStoreBase, Store {
   String toString() {
     return '''
 progressTrigger: ${progressTrigger},
-lceRetry: ${lceRetry},
 navAnimDone: ${navAnimDone},
+lceRetry: ${lceRetry},
+lceMessage: ${lceMessage},
 loading: ${loading},
 progress: ${progress}
     ''';

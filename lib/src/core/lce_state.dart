@@ -3,7 +3,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lce/lce.dart';
 import 'package:mobx/mobx.dart';
-import '../utils/logger.dart';
 
 abstract class LCEState<W extends StatefulWidget, S extends LCEStore> extends State<W> with RouteAware {
   List<ReactionDisposer>? _lceDisposers;
@@ -18,28 +17,16 @@ abstract class LCEState<W extends StatefulWidget, S extends LCEStore> extends St
   @mustCallSuper
   void didChangeDependencies() {
     _lceDisposers ??= [
-      reaction((_) => store.msgStore.message, showToast),
+      reaction((_) => store.lceMessage, _showLCEMsg),
       reaction((_) => store.lceRetry, showRetry),
-      reaction(
-        (_) => store.msgStore.dialogMsg,
-        (dynamic v) => messageDialog(
-          msg: v,
-          title: store.msgStore.dialogTitle,
-          buttonText: store.msgStore.dialogButton,
-        ),
-      ),
-      reaction((_) => globalLCE.lceRetry, (dynamic v) {
-        if (!showing || null == v) return;
-        logger.d('$runtimeType show global retry');
+      reaction((_) => globalLCE.lceMessage, (v) {
+        if (!showing) return;
+        _showLCEMsg(v);
+      }),
+      reaction((_) => globalLCE.lceRetry, (v) {
+        if (!showing) return;
         showRetry(v);
       }),
-      reaction((_) => globalLCE.msgStore.dialogMsg, (dynamic v) {
-        if (!showing || null == v) return;
-        logger.d('$runtimeType show global messageDialog');
-        var es = globalLCE.msgStore;
-        messageDialog(msg: es.dialogMsg, title: es.dialogTitle, buttonText: es.dialogButton);
-      }),
-      reaction((_) => globalLCE.msgStore.message, showToast),
     ];
 
     if (ModalRoute.of(context) is PageRoute) {
@@ -49,23 +36,37 @@ abstract class LCEState<W extends StatefulWidget, S extends LCEStore> extends St
     super.didChangeDependencies();
   }
 
-  /// 重试对话框
-  void showRetry(LCERetry? retry) {
-    if (null == retry) return;
-    LCEDelegate.showRetryFunction(context, retry);
+  /// show message toast
+  void showMsg(String? msg, [Duration? duration]) {
+    if (null == msg || msg.isEmpty) return;
+    LCEDelegate.showToast(context, msg, duration);
   }
 
-  /// 单选项对话框
-  void messageDialog({String? msg, String? title, String? buttonText}) {
-    if (null == msg || msg == '') return;
+  /// show message dialog with 'confirm' button
+  void showMsgDlg(String msg, {String? title, String? buttonText}) {
+    if (msg.isEmpty) return;
+
     var dialog = LCEDelegate.showMessageDialogFunction(context, msg, title, buttonText);
     showDialog(context: context, builder: (_) => dialog);
   }
 
-  /// 显示错误信息
-  void showToast(String? msg) {
-    if (null == msg || msg == '') return;
-    LCEDelegate.showToast(context, msg);
+  void _showLCEMsg(LCEMessage? msg) {
+    if (msg == null) return;
+    if (msg.isDialog == true) {
+      showMsgDlg(
+        msg.message,
+        title: msg.dialogTitle,
+        buttonText: msg.dialogButton,
+      );
+    } else {
+      showMsg(msg.message, msg.duration);
+    }
+  }
+
+  /// show retry dialog
+  void showRetry(LCERetry? retry) {
+    if (null == retry) return;
+    LCEDelegate.showRetryFunction(context, retry);
   }
 
   @override
