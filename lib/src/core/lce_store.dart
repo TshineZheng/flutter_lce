@@ -68,6 +68,7 @@ abstract class LCEStoreBase with Store {
         msg,
         dialogTitle: title,
         dialogButton: button,
+        isDialog: true,
       );
 
   @mustCallSuper

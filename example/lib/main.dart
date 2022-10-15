@@ -77,9 +77,16 @@ abstract class MyHomePageStoreBase extends LCEStore with Store {
     try {
       var r = await fetchRandom;
       counter += r!;
-      showMsgDlg('random value is $r'); // 显示对话框消息
+      showMsgDlg(
+        'random value is $r',
+        title: 'Random succeed',
+      ); // 显示对话框消息
     } catch (e) {
-      showRetry(e.toString(), onRetry: () => random()); // 当发生错误时，显示重试对话框
+      showRetry(
+        e.toString(),
+        onRetry: () => random(),
+        title: 'Random failed',
+      ); // 当发生错误时，显示重试对话框
     }
   }
 

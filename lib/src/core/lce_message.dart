@@ -1,6 +1,7 @@
 class LCEMessage {
   final String message;
   final Duration? duration;
+  final bool isDialog;
   final String? dialogTitle;
   final String? dialogButton;
 
@@ -9,9 +10,8 @@ class LCEMessage {
     this.duration,
     this.dialogTitle,
     this.dialogButton,
+    this.isDialog = false,
   });
-
-  bool get isDialog => dialogButton != null && dialogButton!.isNotEmpty;
 }
 
 typedef RetryFunction = Future Function();
