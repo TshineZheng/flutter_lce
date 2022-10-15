@@ -3,7 +3,13 @@
 
 ## Getting started
 
-需要配合 get_it、mobx、injectable ，使用前务必了解他们的使用方法。
+项目增加库依赖
+```shell
+flutter pub add lce
+```
+需要配合 [get_it](https://pub.flutter-io.cn/packages/get_it)、[mobx](https://pub.flutter-io.cn/packages/mobx)、[injectable](https://pub.flutter-io.cn/packages/injectable) ，使用前务必了解他们的使用方法。
+
+其中 `injectable` 为非必要，前提是手动处理好 `get_it` 的注入配置。
 
 ## Usage
 ### 1. 页面 store
