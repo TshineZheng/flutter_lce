@@ -1,6 +1,6 @@
 name: lce
 description: Flutter LCE(Load Content Error) 
-version: 0.0.2
+version: 0.0.2+1
 homepage: https://github.com/TshineZheng/flutter_lce
 
 environment:
