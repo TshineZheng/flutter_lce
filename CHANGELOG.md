@@ -9,3 +9,7 @@
 ## 0.0.2+1
 
 - fix show message dialog
+
+## 0.0.2+2
+
+- optimize function signature
