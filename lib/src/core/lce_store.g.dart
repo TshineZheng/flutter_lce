@@ -112,7 +112,7 @@ mixin _$LCEStore on LCEStoreBase, Store {
   }
 
   @override
-  void showRetry(String message, {RetryFunction? onRetry, String? title}) {
+  void showRetry(String message, {Function? onRetry, String? title}) {
     final _$actionInfo = _$LCEStoreBaseActionController.startAction(
         name: 'LCEStoreBase.showRetry');
     try {
@@ -123,22 +123,22 @@ mixin _$LCEStore on LCEStoreBase, Store {
   }
 
   @override
-  void showMsg(String msg, {Duration? duration}) {
+  void showMessage(String msg, {Duration? duration}) {
     final _$actionInfo = _$LCEStoreBaseActionController.startAction(
-        name: 'LCEStoreBase.showMsg');
+        name: 'LCEStoreBase.showMessage');
     try {
-      return super.showMsg(msg, duration: duration);
+      return super.showMessage(msg, duration: duration);
     } finally {
       _$LCEStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void showMsgDlg(String msg, {String? title, String? button}) {
+  void showMessageDialog(String msg, {String? title, String? button}) {
     final _$actionInfo = _$LCEStoreBaseActionController.startAction(
-        name: 'LCEStoreBase.showMsgDlg');
+        name: 'LCEStoreBase.showMessageDialog');
     try {
-      return super.showMsgDlg(msg, title: title, button: button);
+      return super.showMessageDialog(msg, title: title, button: button);
     } finally {
       _$LCEStoreBaseActionController.endAction(_$actionInfo);
     }

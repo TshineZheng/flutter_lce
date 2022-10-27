@@ -67,7 +67,7 @@ abstract class MyHomePageStoreBase extends LCEStore with Store {
   @action
   void resetCounter() {
     counter = 0;
-    showMsg('reset'); // 显示消息，一般是 Toast
+    showMessage('reset'); // 显示消息，一般是 Toast
   }
 
   @action
@@ -77,7 +77,7 @@ abstract class MyHomePageStoreBase extends LCEStore with Store {
     try {
       var r = await fetchRandom;
       counter += r!;
-      showMsgDlg(
+      showMessageDialog(
         'random value is $r',
         title: 'Random succeed',
       ); // 显示对话框消息

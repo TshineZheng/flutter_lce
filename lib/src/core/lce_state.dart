@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lce/lce.dart';
+import 'package:lce/src/utils/logger.dart';
 import 'package:mobx/mobx.dart';
 
 abstract class LCEState<W extends StatefulWidget, S extends LCEStore> extends State<W> with RouteAware {
@@ -17,11 +18,11 @@ abstract class LCEState<W extends StatefulWidget, S extends LCEStore> extends St
   @mustCallSuper
   void didChangeDependencies() {
     _lceDisposers ??= [
-      reaction((_) => store.lceMessage, _showLCEMsg),
+      reaction((_) => store.lceMessage, _showLCEMessage),
       reaction((_) => store.lceRetry, showRetry),
       reaction((_) => globalLCE.lceMessage, (v) {
         if (!showing) return;
-        _showLCEMsg(v);
+        _showLCEMessage(v);
       }),
       reaction((_) => globalLCE.lceRetry, (v) {
         if (!showing) return;
@@ -36,31 +37,31 @@ abstract class LCEState<W extends StatefulWidget, S extends LCEStore> extends St
     super.didChangeDependencies();
   }
 
-  /// show message toast
-  void showMsg(String? msg, [Duration? duration]) {
-    if (null == msg || msg.isEmpty) return;
-    LCEDelegate.showToast(context, msg, duration);
-  }
-
-  /// show message dialog with 'confirm' button
-  void showMsgDlg(String msg, {String? title, String? buttonText}) {
-    if (msg.isEmpty) return;
-
-    var dialog = LCEDelegate.showMessageDialogFunction(context, msg, title, buttonText);
-    showDialog(context: context, builder: (_) => dialog);
-  }
-
-  void _showLCEMsg(LCEMessage? msg) {
+  void _showLCEMessage(LCEMessage? msg) {
     if (msg == null) return;
     if (msg.isDialog == true) {
-      showMsgDlg(
+      showMessageDialog(
         msg.message,
         title: msg.dialogTitle,
         buttonText: msg.dialogButton,
       );
     } else {
-      showMsg(msg.message, msg.duration);
+      showMessage(msg.message, msg.duration);
     }
+  }
+
+  /// show message toast
+  void showMessage(String msg, [Duration? duration]) {
+    if (msg.isEmpty) return;
+    LCEDelegate.showToast(context, msg, duration);
+  }
+
+  /// show message dialog with 'confirm' button
+  void showMessageDialog(String msg, {String? title, String? buttonText}) {
+    if (msg.isEmpty) return;
+
+    var dialog = LCEDelegate.showMessageDialogFunction(context, msg, title, buttonText);
+    showDialog(context: context, builder: (_) => dialog);
   }
 
   /// show retry dialog
@@ -69,13 +70,18 @@ abstract class LCEState<W extends StatefulWidget, S extends LCEStore> extends St
     LCEDelegate.showRetryFunction(context, retry);
   }
 
+  bool anmListen = false;
+
   @override
   @mustCallSuper
   Widget build(BuildContext context) {
+    anmListen = true;
+
     /// 监听导航动画是否播放完毕
     var route = ModalRoute.of(context) as ModalRoute<dynamic>;
     void handler(status) {
       if (status == AnimationStatus.completed) {
+        logger.d('AnimationStatus.completed');
         store.navAnimDone = true;
         route.animation?.removeStatusListener(handler);
       }

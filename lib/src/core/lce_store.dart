@@ -48,7 +48,7 @@ abstract class LCEStoreBase with Store {
   ///
   /// [title] 对话框标题，[message] 对话框信息，[error] 实际错误信息。
   @action
-  void showRetry(String message, {RetryFunction? onRetry, String? title}) {
+  void showRetry(String message, {Function? onRetry, String? title}) {
     lceRetry = LCERetry(
       message,
       onRetry: onRetry,
@@ -57,14 +57,14 @@ abstract class LCEStoreBase with Store {
   }
 
   @action
-  void showMsg(String msg, {Duration? duration}) => lceMessage = LCEMessage(
+  void showMessage(String msg, {Duration? duration}) => lceMessage = LCEMessage(
         msg,
         duration: duration,
       );
 
   /// 显示对话框 [title] 对话框标题，[msg] 对话框内容，[button] 对话框按钮
   @action
-  void showMsgDlg(String msg, {String? title, String? button}) => lceMessage = LCEMessage(
+  void showMessageDialog(String msg, {String? title, String? button}) => lceMessage = LCEMessage(
         msg,
         dialogTitle: title,
         dialogButton: button,

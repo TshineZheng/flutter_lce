@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'src/core/lce_message.dart';
 import 'src/core/lce_store.dart';
 
-final globalLCE = LCEStore();
+var globalLCE = LCEStore();
 
 final lceRouteObserver = RouteObserver<PageRoute>();
 

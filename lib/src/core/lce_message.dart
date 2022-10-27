@@ -14,11 +14,9 @@ class LCEMessage {
   });
 }
 
-typedef RetryFunction = Future Function();
-
 class LCERetry {
   final String message;
-  final RetryFunction? onRetry;
+  final Function? onRetry;
   final String? title;
 
   LCERetry(this.message, {this.title, this.onRetry});
