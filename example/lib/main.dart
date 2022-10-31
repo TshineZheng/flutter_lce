@@ -124,7 +124,6 @@ class _MyHomePageState extends LCEState<MyHomePage, MyHomePageStore> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // 此处 store 通过 injectable 自动注入
                 IconButton(onPressed: () => store.incrementCounter(), icon: const Icon(Icons.add)),
                 IconButton(onPressed: () => store.random(), icon: const Icon(Icons.onetwothree)),
                 IconButton(onPressed: () => store.resetCounter(), icon: const Icon(Icons.clear)),
