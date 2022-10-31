@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
 import 'package:lce/lce.dart';
 import 'package:lce/src/utils/logger.dart';
 import 'package:mobx/mobx.dart';
@@ -12,7 +11,16 @@ abstract class LCEState<W extends StatefulWidget, S extends LCEStore> extends St
   bool get showing => _showing;
   bool _showing = false;
 
-  final store = GetIt.instance<S>();
+  late S _store;
+
+  S get store => _store;
+
+  S initStore();
+
+  @mustCallSuper
+  LCEState() {
+    _store = initStore();
+  }
 
   @override
   @mustCallSuper

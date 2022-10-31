@@ -7,15 +7,10 @@
 ```shell
 flutter pub add lce
 ```
-需要配合 [get_it](https://pub.flutter-io.cn/packages/get_it)、[mobx](https://pub.flutter-io.cn/packages/mobx)、[injectable](https://pub.flutter-io.cn/packages/injectable) ，使用前务必了解他们的使用方法。
-
-其中 `injectable` 为非必要，前提是手动处理好 `get_it` 的注入配置。
 
 ## Usage
 ### 1. 页面 store
 ```dart
-/// 配合 injectable 自动注入
-@injectable
 class MyHomePageStore = _MyHomePageStoreBase with _$MyHomePageStore;
 
 /// 创建 mobx store 并继承 LCEStore
@@ -36,12 +31,15 @@ class MyHomePage extends StatefulWidget {
 /// 创建页面 State，继承 LCEState
 class _MyHomePageState extends LCEState<MyHomePage, MyHomePageStore> {
   @override
+  MyHomePageStore initStore() => MyHomePageStore();
+
+  @override
   Widget buildContent(BuildContext context) {
     return Scaffold(
       body: Observer(
         builder: (_) {
           return Text(
-            '${store.counter}', // store 是通过 injectable 注入的
+            '${store.counter}',
           );
         },
       ),

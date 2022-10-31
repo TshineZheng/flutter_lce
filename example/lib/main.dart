@@ -6,27 +6,11 @@
 import 'dart:math';
 import 'package:flutter/material.dart' hide showDialog;
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
-import 'package:injectable/injectable.dart';
 import 'package:lce/lce.dart';
 import 'package:mobx/mobx.dart';
-import 'main.config.dart';
 part 'main.g.dart';
 
-/// injectable 配置
-@InjectableInit(
-  initializerName: r'$initGetIt',
-  preferRelativeImports: true,
-  asExtension: false,
-)
-Future configureDependencies() async => $initGetIt(GetIt.instance);
-
-void main() async {
-  /// 初始化 injectable
-  await configureDependencies();
-
-  runApp(const MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -44,8 +28,6 @@ class MyApp extends StatelessWidget {
 }
 
 /// 定义 mobx store 并继承 LCEStore
-/// @injectable 标记 store 可自动注入
-@injectable
 class MyHomePageStore = MyHomePageStoreBase with _$MyHomePageStore;
 
 abstract class MyHomePageStoreBase extends LCEStore with Store {
@@ -115,6 +97,11 @@ class MyHomePage extends StatefulWidget {
 
 /// PageState 继承 LCEState，并关联 StatefulWidget 和对应的 LCEStore
 class _MyHomePageState extends LCEState<MyHomePage, MyHomePageStore> {
+  _MyHomePageState();
+
+  @override
+  MyHomePageStore initStore() => MyHomePageStore();
+
   @override
   Widget buildContent(BuildContext context) {
     return Scaffold(
