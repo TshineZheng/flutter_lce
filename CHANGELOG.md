@@ -10,6 +10,10 @@
 
 - fix show message dialog
 
-## 0.0.2+2
+## 0.0.3
 
 - optimize function signature
+
+## 0.0.4
+
+- remove dependencies get_it
