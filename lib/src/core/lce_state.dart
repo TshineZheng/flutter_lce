@@ -4,23 +4,28 @@ import 'package:lce/lce.dart';
 import 'package:lce/src/utils/logger.dart';
 import 'package:mobx/mobx.dart';
 
-abstract class LCEState<W extends StatefulWidget, S extends LCEStore> extends State<W> with RouteAware {
+abstract class LCEState<W extends StatefulWidget, S extends LCEStore> extends State<W>
+    with RouteAware, AutomaticKeepAliveClientMixin {
   List<ReactionDisposer>? _lceDisposers;
 
   /// 是否在前台展示
   bool get showing => _showing;
   bool _showing = false;
 
+  S get store => _store;
   late S _store;
 
-  S get store => _store;
-
-  S initStore();
+  @override
+  bool get wantKeepAlive => _wantKeepAlive;
+  late bool _wantKeepAlive;
 
   @mustCallSuper
-  LCEState() {
+  LCEState({bool wantKeepAlive = false}) : super() {
     _store = initStore();
+    _wantKeepAlive = wantKeepAlive;
   }
+
+  S initStore();
 
   @override
   @mustCallSuper
@@ -83,6 +88,8 @@ abstract class LCEState<W extends StatefulWidget, S extends LCEStore> extends St
   @override
   @mustCallSuper
   Widget build(BuildContext context) {
+    super.build(context);
+
     anmListen = true;
 
     /// 监听导航动画是否播放完毕
