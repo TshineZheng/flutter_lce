@@ -17,3 +17,8 @@
 ## 0.0.4
 
 - remove dependencies get_it
+
+## 0.0.5
+
+- optimize function signature  
+    initStore -> buildStore
