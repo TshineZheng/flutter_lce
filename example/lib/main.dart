@@ -100,7 +100,7 @@ class _MyHomePageState extends LCEState<MyHomePage, MyHomePageStore> {
   _MyHomePageState();
 
   @override
-  MyHomePageStore initStore() => MyHomePageStore();
+  MyHomePageStore buildStore() => MyHomePageStore();
 
   @override
   Widget buildContent(BuildContext context) {

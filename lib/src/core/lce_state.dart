@@ -21,11 +21,11 @@ abstract class LCEState<W extends StatefulWidget, S extends LCEStore> extends St
 
   @mustCallSuper
   LCEState({bool wantKeepAlive = false}) : super() {
-    _store = initStore();
+    _store = buildStore();
     _wantKeepAlive = wantKeepAlive;
   }
 
-  S initStore();
+  S buildStore();
 
   @override
   @mustCallSuper
