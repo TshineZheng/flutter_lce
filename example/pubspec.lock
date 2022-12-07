@@ -259,7 +259,7 @@ packages:
   lce:
     dependency: "direct main"
     description:
-      path: ".."
+      path: "../lce"
       relative: true
     source: path
     version: "0.0.5"
