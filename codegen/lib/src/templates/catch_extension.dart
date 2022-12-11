@@ -11,12 +11,12 @@ class CatchExtensionTemplate {
     if (methodTemplate.isEmpty) return '';
 
     final ret = '''
-extension ${className}CatchExt on $className{
-  
-  $methodTemplate
+      extension ${className}CatchExt on $className{
+        
+        $methodTemplate
 
-}
-''';
+      }
+      ''';
 
     return ret;
   }

@@ -32,8 +32,8 @@ class CatchMethodTemplate {
     }
   }
 
-  String get title{
-    if(lceCatch.title == null) return 'null';
+  String get title {
+    if (lceCatch.title == null) return 'null';
     return '"${lceCatch.title}"';
   }
 
@@ -65,21 +65,21 @@ class CatchMethodTemplate {
   @override
   String toString() => element.isAsynchronous
       ? """
-${method.returnType} ${method.name}$methodCatch${method.typeParams}(${method.params}) async{
-  try {
-    return await ${method.name}${method.typeArgs}(${method.args});
-  } catch (e) {
-    $catchedCode
-  }
-}
-"""
+      ${method.returnType} ${method.name}$methodCatch${method.typeParams}(${method.params}) async{
+        try {
+          return await ${method.name}${method.typeArgs}(${method.args});
+        } catch (e) {
+          $catchedCode
+        }
+      }
+      """
       : """
-${method.returnType} ${method.name}\$$methodCatch${method.typeParams}(${method.params}) {
-  try {
-    return ${method.name}${method.typeArgs}(${method.args});
-  } catch (e) {
-    $catchedCode
-  }
-}
-""";
+      ${method.returnType} ${method.name}\$$methodCatch${method.typeParams}(${method.params}) {
+        try {
+          return ${method.name}${method.typeArgs}(${method.args});
+        } catch (e) {
+          $catchedCode
+        }
+      }
+      """;
 }
