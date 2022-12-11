@@ -6,6 +6,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart' hide showDialog;
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:lce/anotations.dart';
 import 'package:lce/lce.dart';
 import 'package:mobx/mobx.dart';
 
@@ -25,28 +26,6 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(),
     );
-  }
-}
-
-extension MyHomePageStoreBaseCatchExt on MyHomePageStoreBase {
-  Future random$retry() async {
-    try {
-      return await random();
-    } catch (e) {
-      showRetry(
-        e.toString(),
-        onRetry: () => random(),
-        title: 'Random failed',
-      );
-    }
-  }
-
-  Future random$catch() async{
-    try {
-      return await random();
-    } catch (e) {
-      showMessage(e.toString());
-    }
   }
 }
 
@@ -75,6 +54,7 @@ abstract class MyHomePageStoreBase extends LCEStore with Store {
     showMessage('reset'); // 显示消息，一般是 Toast
   }
 
+  @retryCatch //生成 random$retry 方法
   @action
   Future random() async {
     fetchRandom = randomApi().obf; // 将 future 转换为可观察的 ObservableFuture
@@ -139,7 +119,7 @@ class _MyHomePageState extends LCEState<MyHomePage, MyHomePageStore> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(onPressed: () => store.incrementCounter(), icon: const Icon(Icons.add)),
-                IconButton(onPressed: () => store.random$catch(), icon: const Icon(Icons.onetwothree)),
+                IconButton(onPressed: () => store.random$retry(), icon: const Icon(Icons.onetwothree)),
                 IconButton(onPressed: () => store.resetCounter(), icon: const Icon(Icons.clear)),
               ],
             )

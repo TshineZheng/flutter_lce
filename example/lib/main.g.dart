@@ -3,6 +3,24 @@
 part of 'main.dart';
 
 // **************************************************************************
+// LCEGenerator
+// **************************************************************************
+
+extension MyHomePageStoreBaseCatchExt on MyHomePageStoreBase {
+  Future<dynamic> random$retry() async {
+    try {
+      return await random();
+    } catch (e) {
+      showRetry(
+        e.toString(),
+        onRetry: () => random$retry(),
+        title: null,
+      );
+    }
+  }
+}
+
+// **************************************************************************
 // StoreGenerator
 // **************************************************************************
 
