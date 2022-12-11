@@ -2,12 +2,13 @@
 /// 本示例展示 Flutter lce 基本用法
 /// 特别关注注释行
 /// --------------------------------------------------
-
 import 'dart:math';
+
 import 'package:flutter/material.dart' hide showDialog;
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:lce/lce.dart';
 import 'package:mobx/mobx.dart';
+
 part 'main.g.dart';
 
 void main() => runApp(const MyApp());
@@ -24,6 +25,28 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(),
     );
+  }
+}
+
+extension MyHomePageStoreBaseCatchExt on MyHomePageStoreBase {
+  Future random$retry() async {
+    try {
+      return await random();
+    } catch (e) {
+      showRetry(
+        e.toString(),
+        onRetry: () => random(),
+        title: 'Random failed',
+      );
+    }
+  }
+
+  Future random$catch() async{
+    try {
+      return await random();
+    } catch (e) {
+      showMessage(e.toString());
+    }
   }
 }
 
@@ -55,21 +78,12 @@ abstract class MyHomePageStoreBase extends LCEStore with Store {
   @action
   Future random() async {
     fetchRandom = randomApi().obf; // 将 future 转换为可观察的 ObservableFuture
-
-    try {
-      var r = await fetchRandom;
-      counter += r!;
-      showMessageDialog(
-        'random value is $r',
-        title: 'Random succeed',
-      ); // 显示对话框消息
-    } catch (e) {
-      showRetry(
-        e.toString(),
-        onRetry: () => random(),
-        title: 'Random failed',
-      ); // 当发生错误时，显示重试对话框
-    }
+    var r = await fetchRandom;
+    counter += r!;
+    showMessageDialog(
+      'random value is $r',
+      title: 'Random succeed',
+    ); // 显示对话框消息
   }
 
   bool randomFailed = true;
@@ -125,7 +139,7 @@ class _MyHomePageState extends LCEState<MyHomePage, MyHomePageStore> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(onPressed: () => store.incrementCounter(), icon: const Icon(Icons.add)),
-                IconButton(onPressed: () => store.random(), icon: const Icon(Icons.onetwothree)),
+                IconButton(onPressed: () => store.random$catch(), icon: const Icon(Icons.onetwothree)),
                 IconButton(onPressed: () => store.resetCounter(), icon: const Icon(Icons.clear)),
               ],
             )
