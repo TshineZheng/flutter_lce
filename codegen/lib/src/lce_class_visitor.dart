@@ -5,15 +5,17 @@ import 'package:lce_codegen/src/aid/mobx_codegen/method.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'aid/mobx_codegen/type_names.dart';
+import 'config.dart';
 import 'templates/catch_extension.dart';
 import 'templates/catch_method.dart';
 
 class LCEClassVisitor extends SimpleElementVisitor {
   final LibraryScopedNameFinder typeFinder;
-  
+  final Config config;
+
   final _template = CatchExtensionTemplate();
 
-  LCEClassVisitor(this.typeFinder);
+  LCEClassVisitor(this.typeFinder, this.config);
 
   @override
   void visitClassElement(ClassElement element) {
@@ -40,6 +42,7 @@ class LCEClassVisitor extends SimpleElementVisitor {
             lceCatch,
             typeFinder,
             element,
+            config,
           ),
         );
       }

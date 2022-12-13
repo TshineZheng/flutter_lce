@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:lce/anotations.dart';
+import 'package:lce_codegen/src/config.dart';
 
 import '../aid/mobx_codegen/method.dart';
 import '../aid/mobx_codegen/type_names.dart';
@@ -9,16 +10,24 @@ class CatchMethodTemplate {
   final MethodOverrideTemplate method;
   final MethodElement element;
   final LibraryScopedNameFinder typeFinder;
+  final Config config;
 
-  CatchMethodTemplate(this.method, this.lceCatch, this.typeFinder, this.element);
+  CatchMethodTemplate(
+    this.method,
+    this.lceCatch,
+    this.typeFinder,
+    this.element,
+    this.config,
+  );
 
-  final methodCatchMap = {
-    CatchLevel.weak: '\$catch',
-    CatchLevel.strong: '\$\$catch',
-    CatchLevel.retry: '\$retry',
-  };
-
-  String get methodCatch => methodCatchMap[lceCatch.level]!;
+  String get methodSuffix {
+    final methodCatchMap = {
+      CatchLevel.weak: config.weakCatchSuffix,
+      CatchLevel.strong: config.strongCatchSuffix,
+      CatchLevel.retry: config.retryCatchSuffix,
+    };
+    return methodCatchMap[lceCatch.level]!;
+  }
 
   String get message {
     if (lceCatch.withCause == false) {
@@ -50,7 +59,7 @@ class CatchMethodTemplate {
         return """
           showRetry(
             $message,
-            onRetry: () => ${method.name}$methodCatch${method.typeArgs}(${method.args}),
+            onRetry: () => ${method.name}$methodSuffix${method.typeArgs}(${method.args}),
             title: $title,
           );
           """;
@@ -65,7 +74,7 @@ class CatchMethodTemplate {
   @override
   String toString() => element.isAsynchronous
       ? """
-      ${method.returnType} ${method.name}$methodCatch${method.typeParams}(${method.params}) async{
+      ${method.returnType} ${method.name}$methodSuffix${method.typeParams}(${method.params}) async{
         try {
           return await ${method.name}${method.typeArgs}(${method.args});
         } catch (e) {
@@ -74,7 +83,7 @@ class CatchMethodTemplate {
       }
       """
       : """
-      ${method.returnType} ${method.name}\$$methodCatch${method.typeParams}(${method.params}) {
+      ${method.returnType} ${method.name}\$$methodSuffix${method.typeParams}(${method.params}) {
         try {
           return ${method.name}${method.typeArgs}(${method.args});
         } catch (e) {

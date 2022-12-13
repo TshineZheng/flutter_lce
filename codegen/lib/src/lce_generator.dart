@@ -5,8 +5,13 @@ import 'package:lce_codegen/src/lce_class_visitor.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'aid/mobx_codegen/type_names.dart';
+import 'config.dart';
 
 class LCEGenerator extends Generator {
+  final Config config;
+
+  LCEGenerator(this.config);
+
   @override
   FutureOr<String?> generate(LibraryReader library, BuildStep buildStep) async {
     if (library.allElements.isEmpty) return '';
@@ -16,7 +21,7 @@ class LCEGenerator extends Generator {
     for (var classElement in library.classes) {
       if (isLCEStoreClass(classElement)) {
         final typeNameFinder = LibraryScopedNameFinder(library.element);
-        final visitor = LCEClassVisitor(typeNameFinder);
+        final visitor = LCEClassVisitor(typeNameFinder, config);
         classElement
           ..accept(visitor)
           ..visitChildren(visitor);
