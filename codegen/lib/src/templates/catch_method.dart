@@ -20,15 +20,6 @@ class CatchMethodTemplate {
     this.config,
   );
 
-  String get methodSuffix {
-    final methodCatchMap = {
-      CatchLevel.weak: config.weakCatchSuffix,
-      CatchLevel.strong: config.strongCatchSuffix,
-      CatchLevel.retry: config.retryCatchSuffix,
-    };
-    return methodCatchMap[lceCatch.level]!;
-  }
-
   String get message {
     if (lceCatch.withCause == false) {
       return '"${lceCatch.message ?? ''}"';
@@ -46,30 +37,30 @@ class CatchMethodTemplate {
     return '"${lceCatch.title}"';
   }
 
-  String get catchedCode {
-    switch (lceCatch.level) {
-      case CatchLevel.strong:
-        return """
+  String get methodSuffix => {
+        CatchLevel.weak: config.weakCatchSuffix,
+        CatchLevel.strong: config.strongCatchSuffix,
+        CatchLevel.retry: config.retryCatchSuffix,
+      }[lceCatch.level]!;
+
+  String get catchedCode => {
+        CatchLevel.weak: """
+          showMessage($message);
+          """,
+        CatchLevel.strong: """
           showMessageDialog(
             $message,
             title: $title,
           );
-          """;
-      case CatchLevel.retry:
-        return """
+          """,
+        CatchLevel.retry: """
           showRetry(
             $message,
             onRetry: () => ${method.name}$methodSuffix${method.typeArgs}(${method.args}),
             title: $title,
           );
-          """;
-      case CatchLevel.weak:
-      default:
-        return """
-          showMessage($message);
-          """;
-    }
-  }
+          """,
+      }[lceCatch.level]!;
 
   @override
   String toString() => element.isAsynchronous
