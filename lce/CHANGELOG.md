@@ -22,3 +22,7 @@
 
 - optimize function signature  
     initStore -> buildStore
+
+## 0.1.0
+### Add
+- Use `LCECatch` annotation to generate exception protection and error prompt code
