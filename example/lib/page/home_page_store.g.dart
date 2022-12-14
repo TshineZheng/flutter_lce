@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'main.dart';
+part of 'home_page_store.dart';
 
 // **************************************************************************
 // LCEGenerator
 // **************************************************************************
 
-extension MyHomePageStoreBaseCatchExt on MyHomePageStoreBase {
+extension HomePageStoreBaseCatchExt on HomePageStoreBase {
   Future<dynamic> random$retry() async {
     try {
       return await random();
@@ -26,17 +26,17 @@ extension MyHomePageStoreBaseCatchExt on MyHomePageStoreBase {
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$MyHomePageStore on MyHomePageStoreBase, Store {
+mixin _$HomePageStore on HomePageStoreBase, Store {
   Computed<bool>? _$progressComputed;
 
   @override
   bool get progress =>
       (_$progressComputed ??= Computed<bool>(() => super.progress,
-              name: 'MyHomePageStoreBase.progress'))
+              name: 'HomePageStoreBase.progress'))
           .value;
 
   late final _$fetchRandomAtom =
-      Atom(name: 'MyHomePageStoreBase.fetchRandom', context: context);
+      Atom(name: 'HomePageStoreBase.fetchRandom', context: context);
 
   @override
   ObservableFuture<int?> get fetchRandom {
@@ -52,7 +52,7 @@ mixin _$MyHomePageStore on MyHomePageStoreBase, Store {
   }
 
   late final _$counterAtom =
-      Atom(name: 'MyHomePageStoreBase.counter', context: context);
+      Atom(name: 'HomePageStoreBase.counter', context: context);
 
   @override
   int get counter {
@@ -68,35 +68,35 @@ mixin _$MyHomePageStore on MyHomePageStoreBase, Store {
   }
 
   late final _$randomAsyncAction =
-      AsyncAction('MyHomePageStoreBase.random', context: context);
+      AsyncAction('HomePageStoreBase.random', context: context);
 
   @override
   Future<dynamic> random() {
     return _$randomAsyncAction.run(() => super.random());
   }
 
-  late final _$MyHomePageStoreBaseActionController =
-      ActionController(name: 'MyHomePageStoreBase', context: context);
+  late final _$HomePageStoreBaseActionController =
+      ActionController(name: 'HomePageStoreBase', context: context);
 
   @override
   void incrementCounter() {
-    final _$actionInfo = _$MyHomePageStoreBaseActionController.startAction(
-        name: 'MyHomePageStoreBase.incrementCounter');
+    final _$actionInfo = _$HomePageStoreBaseActionController.startAction(
+        name: 'HomePageStoreBase.incrementCounter');
     try {
       return super.incrementCounter();
     } finally {
-      _$MyHomePageStoreBaseActionController.endAction(_$actionInfo);
+      _$HomePageStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void resetCounter() {
-    final _$actionInfo = _$MyHomePageStoreBaseActionController.startAction(
-        name: 'MyHomePageStoreBase.resetCounter');
+    final _$actionInfo = _$HomePageStoreBaseActionController.startAction(
+        name: 'HomePageStoreBase.resetCounter');
     try {
       return super.resetCounter();
     } finally {
-      _$MyHomePageStoreBaseActionController.endAction(_$actionInfo);
+      _$HomePageStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
