@@ -8,6 +8,11 @@
 flutter pub add lce
 ```
 
+可选依赖（用于支持 @LCECatch 注解）
+```shell
+flutter pub add lce_codegen
+```
+
 ## Usage
 ### 1. 页面 store
 ```dart

@@ -1,0 +1,10 @@
+targets:
+  $default:
+    builders:
+      lce_codegen:
+        enabled: true
+        options:
+          debug: true
+          weakCatchSuffix: '$catch'
+          strongCatchSuffix: '$$catch'
+          retryCatchSuffix: '$retry'
