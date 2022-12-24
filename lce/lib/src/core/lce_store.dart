@@ -48,14 +48,16 @@ abstract class _LCEStoreBase with Store {
   }
 
   @action
-  void showMessage(String msg, {Duration? duration}) => _lceMessage = LCEMessage(
+  void showMessage(String msg, {Duration? duration}) =>
+      _lceMessage = LCEMessage(
         msg,
         duration: duration,
       );
 
   /// 显示对话框 [title] 对话框标题，[msg] 对话框内容，[button] 对话框按钮
   @action
-  void showMessageDialog(String msg, {String? title, String? button}) => _lceMessage = LCEMessage(
+  void showMessageDialog(String msg, {String? title, String? button}) =>
+      _lceMessage = LCEMessage(
         msg,
         dialogTitle: title,
         dialogButton: button,

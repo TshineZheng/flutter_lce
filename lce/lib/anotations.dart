@@ -10,19 +10,26 @@ class LCECatch {
   final String? message;
   final bool withCause;
 
-  const LCECatch({this.level = CatchLevel.weak, this.title, this.message, this.withCause = true});
+  const LCECatch(
+      {this.level = CatchLevel.weak,
+      this.title,
+      this.message,
+      this.withCause = true});
 }
 
 class WeakCatch extends LCECatch {
-  const WeakCatch({super.message, super.withCause = true}) : super(level: CatchLevel.weak);
+  const WeakCatch({super.message, super.withCause = true})
+      : super(level: CatchLevel.weak);
 }
 
 class StrongCatch extends LCECatch {
-  const StrongCatch({super.title, super.message, super.withCause = true}) : super(level: CatchLevel.strong);
+  const StrongCatch({super.title, super.message, super.withCause = true})
+      : super(level: CatchLevel.strong);
 }
 
 class RetryCatch extends LCECatch {
-  const RetryCatch({super.title, super.message, super.withCause = true}) : super(level: CatchLevel.retry);
+  const RetryCatch({super.title, super.message, super.withCause = true})
+      : super(level: CatchLevel.retry);
 }
 
 const weakCatch = WeakCatch();

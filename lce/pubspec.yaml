@@ -1,6 +1,6 @@
 name: lce
-description: Flutter LCE(Load Content Error) 
-version: 0.1.0
+description: Flutter LCE(Load Content Error), mobx state management template, which is convenient for handling loading, content and errors.
+version: 0.1.1
 homepage: https://github.com/TshineZheng/flutter_lce
 
 environment:

@@ -26,3 +26,7 @@
 ## 0.1.0
 ### Add
 - Use `LCECatch` annotation to generate exception protection and error prompt code
+
+## 0.1.1
+### Break
+- Remove `LCEDelegate`，To customize the message and progress display, please extends `LCEState` and override `showMessage`、`showMessageDialog`、`showRetry`、`buildLoadingView` methods

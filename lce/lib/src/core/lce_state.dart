@@ -4,8 +4,80 @@ import 'package:lce/lce.dart';
 import 'package:lce/src/utils/logger.dart';
 import 'package:mobx/mobx.dart';
 
-abstract class LCEState<W extends StatefulWidget, S extends LCEStore> extends State<W>
-    with RouteAware, AutomaticKeepAliveClientMixin {
+abstract class LCEState<W extends StatefulWidget, S extends LCEStore>
+    extends LCEStateBase<W, S> {
+  @override
+  void showMessage(LCEMessage msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(msg.message),
+      duration: msg.duration ?? const Duration(seconds: 1),
+    ));
+  }
+
+  @override
+  void showMessageDialog(LCEMessage msg) {
+    final dialog = AlertDialog(
+      title: null == msg.dialogTitle ? null : Text(msg.dialogTitle!),
+      content: Text(msg.message),
+      actions: <Widget>[
+        TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(msg.dialogButton ?? 'OK')),
+      ],
+    );
+
+    showDialog(context: context, builder: (_) => dialog);
+  }
+
+  @override
+  void showRetry(LCERetry retry) {
+    var dialog = AlertDialog(
+      title: null == retry.title ? null : Text(retry.title!),
+      content: Text(retry.message),
+      actions: <Widget>[
+        TextButton(
+            onPressed: () => Navigator.pop(context, 0),
+            child: const Text('CANCEL')),
+        TextButton(
+            onPressed: () => Navigator.pop(context, 1),
+            child: const Text('RETRY')),
+      ],
+    );
+
+    showDialog(context: context, builder: (_) => dialog).then((v) async {
+      if (v == 1 && retry.onRetry != null) {
+        retry.onRetry!();
+      }
+    });
+  }
+
+  @override
+  Widget buildLoadingView() {
+    return Container(
+      height: 100,
+      constraints: const BoxConstraints.expand(),
+      decoration: const BoxDecoration(color: Colors.transparent),
+      child: FittedBox(
+        fit: BoxFit.none,
+        child: SizedBox(
+          height: 100,
+          width: 100,
+          child: Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            child: const Padding(
+              padding: EdgeInsets.all(25.0),
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+abstract class LCEStateBase<W extends StatefulWidget, S extends LCEStore>
+    extends State<W> with RouteAware, AutomaticKeepAliveClientMixin {
   List<ReactionDisposer>? _lceDisposers;
 
   /// 是否在前台展示
@@ -20,7 +92,7 @@ abstract class LCEState<W extends StatefulWidget, S extends LCEStore> extends St
   late bool _wantKeepAlive;
 
   @mustCallSuper
-  LCEState({bool wantKeepAlive = false}) : super() {
+  LCEStateBase({bool wantKeepAlive = false}) : super() {
     _store = buildStore();
     _wantKeepAlive = wantKeepAlive;
   }
@@ -32,19 +104,20 @@ abstract class LCEState<W extends StatefulWidget, S extends LCEStore> extends St
   void didChangeDependencies() {
     _lceDisposers ??= [
       reaction((_) => store.lceMessage, _showLCEMessage),
-      reaction((_) => store.lceRetry, showRetry),
+      reaction((_) => store.lceRetry, _showLCERetry),
       reaction((_) => globalLCE.lceMessage, (v) {
         if (!showing) return;
         _showLCEMessage(v);
       }),
       reaction((_) => globalLCE.lceRetry, (v) {
         if (!showing) return;
-        showRetry(v);
+        _showLCERetry(v);
       }),
     ];
 
     if (ModalRoute.of(context) is PageRoute) {
-      lceRouteObserver.subscribe(this, ModalRoute.of(context) as PageRoute<dynamic>);
+      lceRouteObserver.subscribe(
+          this, ModalRoute.of(context) as PageRoute<dynamic>);
     }
 
     super.didChangeDependencies();
@@ -52,36 +125,28 @@ abstract class LCEState<W extends StatefulWidget, S extends LCEStore> extends St
 
   void _showLCEMessage(LCEMessage? msg) {
     if (msg == null) return;
+    if (msg.message.isEmpty) return;
+
     if (msg.isDialog == true) {
-      showMessageDialog(
-        msg.message,
-        title: msg.dialogTitle,
-        buttonText: msg.dialogButton,
-      );
+      showMessageDialog(msg);
     } else {
-      showMessage(msg.message, msg.duration);
+      showMessage(msg);
     }
   }
 
-  /// show message toast
-  void showMessage(String msg, [Duration? duration]) {
-    if (msg.isEmpty) return;
-    LCEDelegate.showToast(context, msg, duration);
+  void _showLCERetry(LCERetry? retry) {
+    if (null == retry) return;
+    showRetry(retry);
   }
+
+  /// show message toast
+  void showMessage(LCEMessage msg);
 
   /// show message dialog with 'confirm' button
-  void showMessageDialog(String msg, {String? title, String? buttonText}) {
-    if (msg.isEmpty) return;
-
-    var dialog = LCEDelegate.showMessageDialogFunction(context, msg, title, buttonText);
-    showDialog(context: context, builder: (_) => dialog);
-  }
+  void showMessageDialog(LCEMessage msg);
 
   /// show retry dialog
-  void showRetry(LCERetry? retry) {
-    if (null == retry) return;
-    LCEDelegate.showRetryFunction(context, retry);
-  }
+  void showRetry(LCERetry retry);
 
   bool anmListen = false;
 
@@ -109,21 +174,21 @@ abstract class LCEState<W extends StatefulWidget, S extends LCEStore> extends St
       child: Stack(
         children: <Widget>[
           buildContent(context),
-          _buildLoadingView(),
+          Observer(
+            builder: (context) => Visibility(
+              visible: store.progress || globalLCE.progress,
+              child: buildLoadingView(),
+            ),
+          ),
         ],
       ),
     );
   }
 
+  Widget buildContent(BuildContext context);
+
   /// 加载进度条，通过 [store.progress] 变量驱动
-  Observer _buildLoadingView() {
-    return Observer(builder: (context) {
-      return Visibility(
-        visible: store.progress || globalLCE.progress,
-        child: LCEDelegate.loadingWidget,
-      );
-    });
-  }
+  Widget buildLoadingView();
 
   @override
   @mustCallSuper
@@ -157,6 +222,4 @@ abstract class LCEState<W extends StatefulWidget, S extends LCEStore> extends St
     lceRouteObserver.unsubscribe(this);
     super.dispose();
   }
-
-  Widget buildContent(BuildContext context);
 }
