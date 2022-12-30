@@ -262,7 +262,7 @@ packages:
       path: "../lce"
       relative: true
     source: path
-    version: "0.1.0"
+    version: "0.1.1"
   lce_codegen:
     dependency: "direct dev"
     description:

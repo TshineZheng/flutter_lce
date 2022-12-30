@@ -17,7 +17,7 @@ abstract class HomePageStoreBase extends LCEStore with Store {
   bool get progress => super.progress || fetchRandom.pending; // 当 fetchRandom 执行时，显示加载中
 
   @observable
-  var fetchRandom = OBF<int?>(); // 定义可观察的 ObservableFuture
+  var fetchRandom = OBF<int>(); // 定义可观察的 ObservableFuture
 
   @observable
   var counter = 0;
@@ -38,7 +38,7 @@ abstract class HomePageStoreBase extends LCEStore with Store {
   Future random() async {
     fetchRandom = randomApi().obf; // 将 future 转换为可观察的 ObservableFuture
     var r = await fetchRandom;
-    counter += r!;
+    counter += r;
     showMessageDialog(
       'random value is $r',
       title: 'Random succeed',

@@ -39,13 +39,13 @@ mixin _$HomePageStore on HomePageStoreBase, Store {
       Atom(name: 'HomePageStoreBase.fetchRandom', context: context);
 
   @override
-  ObservableFuture<int?> get fetchRandom {
+  ObservableFuture<int> get fetchRandom {
     _$fetchRandomAtom.reportRead();
     return super.fetchRandom;
   }
 
   @override
-  set fetchRandom(ObservableFuture<int?> value) {
+  set fetchRandom(ObservableFuture<int> value) {
     _$fetchRandomAtom.reportWrite(value, super.fetchRandom, () {
       super.fetchRandom = value;
     });
