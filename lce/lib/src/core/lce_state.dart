@@ -91,7 +91,6 @@ abstract class LCEStateBase<W extends StatefulWidget, S extends LCEStore>
   bool get wantKeepAlive => _wantKeepAlive;
   late bool _wantKeepAlive;
 
-  @mustCallSuper
   LCEStateBase({bool wantKeepAlive = false}) : super() {
     _store = buildStore();
     _wantKeepAlive = wantKeepAlive;
